@@ -1,19 +1,21 @@
+import { extend,configure } from 'vee-validate';
 import Vue from 'vue'
-import { ValidationProvider, ValidationObserver, extend } from 'vee-validate';
-import { alpha, alpha_dash, alpha_num, alpha_spaces, between, confirmed, digits, dimensions, email, excluded, ext, image, integer, is, is_not, length, max, max_value, mimes, min, min_value, numeric, oneOf, regex, required, required_if, size } from "vee-validate/dist/rules.js";
+import * as rules from 'vee-validate/dist/rules';
+import { ValidationProvider,ValidationObserver } from 'vee-validate/dist/vee-validate.full.esm';
 
-Vue.component('ValidationProvider', ValidationProvider);
-Vue.component("ValidationObserver", ValidationObserver);
-const rules = [alpha, alpha_dash, alpha_num, alpha_spaces, between, confirmed, digits, dimensions, email, excluded, ext, image, integer, is, is_not, length, max, max_value, mimes, min, min_value, numeric, oneOf, regex, required, required_if, size];
-const keys = { alpha, alpha_dash, alpha_num, alpha_spaces, between, confirmed, digits, dimensions, email, excluded, ext, image, integer, is, is_not, length, max, max_value, mimes, min, min_value, numeric, oneOf, regex, required, required_if, size };
+Object.keys(rules).forEach(rule => {
+  extend(rule, rules[rule]);
+});
 
-for (let item in keys) {
-    for (let fn of rules) {
-        extend(item, fn)
-    }
+// with typescript
+for (let [rule, validation] of Object.entries(rules)) {
+  extend(rule, {
+    ...validation
+  });
 }
 
-import { configure } from "vee-validate";
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
 
 export default function ({ app }) {
     configure({
