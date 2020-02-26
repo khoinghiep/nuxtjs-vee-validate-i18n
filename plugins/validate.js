@@ -1,7 +1,7 @@
-import { extend,configure } from 'vee-validate';
+
 import Vue from 'vue'
 import * as rules from 'vee-validate/dist/rules';
-import { ValidationProvider,ValidationObserver } from 'vee-validate/dist/vee-validate.full.esm';
+import { ValidationProvider, ValidationObserver, extend, configure } from 'vee-validate';
 
 Object.keys(rules).forEach(rule => {
   extend(rule, rules[rule]);
